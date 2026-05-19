@@ -1,0 +1,1328 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Salwa Fajariah — Data, AI & Strategy</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Inter:wght@300;400;500&family=Plus+Jakarta+Sans:wght@400;500;600&display=swap" rel="stylesheet"/>
+
+<style>
+  :root {
+    --ivory: #F8F5F2;
+    --blush: #FCE7EF;
+    --rose: #C49BAF;
+    --cocoa: #463840;
+    --muted: #7D6A72;
+    --white: #ffffff;
+    --rose-light: #e8c4d4;
+    --rose-dark: #a8809a;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--ivory);
+    color: var(--cocoa);
+    font-family: 'Inter', sans-serif;
+    overflow-x: hidden;
+    cursor: none;
+  }
+
+  /* CUSTOM CURSOR */
+  .cursor {
+    width: 10px; height: 10px;
+    background: var(--rose);
+    border-radius: 50%;
+    position: fixed; top: 0; left: 0;
+    pointer-events: none; z-index: 9999;
+    transform: translate(-50%,-50%);
+    transition: transform 0.1s ease;
+    mix-blend-mode: multiply;
+  }
+  .cursor-ring {
+    width: 32px; height: 32px;
+    border: 1.5px solid var(--rose);
+    border-radius: 50%;
+    position: fixed; top: 0; left: 0;
+    pointer-events: none; z-index: 9998;
+    transform: translate(-50%,-50%);
+    transition: all 0.15s ease;
+    opacity: 0.6;
+  }
+
+  /* LOADING SCREEN */
+  #loading {
+    position: fixed; inset: 0;
+    background: var(--ivory);
+    z-index: 9000;
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    gap: 20px;
+    transition: opacity 0.8s ease;
+  }
+  #loading.fade-out { opacity: 0; pointer-events: none; }
+
+  .loading-avatar {
+    width: 110px;
+    animation: float 2.4s ease-in-out infinite;
+    image-rendering: pixelated;
+    filter: drop-shadow(0 8px 24px rgba(196,155,175,0.35));
+  }
+
+  .loading-greeting {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(2.2rem, 6vw, 3.8rem);
+    color: var(--cocoa);
+    font-weight: 600;
+    letter-spacing: -0.02em;
+    min-height: 1.2em;
+    text-align: center;
+    animation: greetFade 0.5s ease;
+  }
+
+  .loading-name {
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-size: 0.85rem;
+    letter-spacing: 0.18em;
+    color: var(--muted);
+    text-transform: uppercase;
+  }
+
+  .loading-sub {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.05rem;
+    color: var(--rose);
+    font-style: italic;
+    letter-spacing: 0.04em;
+  }
+
+  .loading-bar {
+    width: 120px; height: 2px;
+    background: var(--blush);
+    border-radius: 2px;
+    overflow: hidden;
+    margin-top: 8px;
+  }
+  .loading-bar-fill {
+    height: 100%;
+    background: var(--rose);
+    border-radius: 2px;
+    animation: loadBar 3.5s ease forwards;
+  }
+
+  .sparkle {
+    position: absolute;
+    pointer-events: none;
+    animation: sparklePop 1.2s ease forwards;
+    font-size: 1rem;
+    opacity: 0;
+  }
+
+  /* NAVBAR */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0;
+    z-index: 500;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 18px 5%;
+    background: rgba(248,245,242,0.88);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid rgba(196,155,175,0.12);
+    transition: all 0.3s ease;
+  }
+  nav.scrolled {
+    padding: 12px 5%;
+    box-shadow: 0 2px 20px rgba(196,155,175,0.12);
+  }
+
+  .nav-logo {
+    display: flex; align-items: center; gap: 10px;
+    text-decoration: none;
+  }
+  .nav-logo img {
+    width: 30px; height: 30px;
+    object-fit: contain;
+  }
+  .nav-logo span {
+    font-family: 'Playfair Display', serif;
+    font-size: 1rem;
+    color: var(--cocoa);
+    font-weight: 600;
+    letter-spacing: -0.01em;
+  }
+
+  .nav-links {
+    display: flex; align-items: center; gap: 32px;
+    list-style: none;
+  }
+  .nav-links a {
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-size: 0.8rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--muted);
+    text-decoration: none;
+    transition: color 0.2s;
+    position: relative;
+  }
+  .nav-links a::after {
+    content: '';
+    position: absolute; bottom: -2px; left: 0; right: 0;
+    height: 1px; background: var(--rose);
+    transform: scaleX(0);
+    transition: transform 0.3s ease;
+  }
+  .nav-links a:hover { color: var(--cocoa); }
+  .nav-links a:hover::after { transform: scaleX(1); }
+
+  .lang-switcher {
+    display: flex; gap: 6px;
+  }
+  .lang-btn {
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-size: 0.7rem;
+    letter-spacing: 0.08em;
+    padding: 4px 8px;
+    border: 1px solid rgba(196,155,175,0.3);
+    border-radius: 20px;
+    background: transparent;
+    color: var(--muted);
+    cursor: none;
+    transition: all 0.2s;
+  }
+  .lang-btn.active, .lang-btn:hover {
+    background: var(--rose);
+    color: white;
+    border-color: var(--rose);
+  }
+
+  /* HERO */
+  #hero {
+    min-height: 100vh;
+    display: flex; align-items: center;
+    padding: 120px 5% 80px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .hero-blob {
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(80px);
+    pointer-events: none;
+    z-index: 0;
+  }
+  .hero-blob-1 {
+    width: 520px; height: 420px;
+    background: rgba(252,231,239,0.6);
+    top: -80px; right: -100px;
+    animation: blobDrift 12s ease-in-out infinite alternate;
+  }
+  .hero-blob-2 {
+    width: 300px; height: 300px;
+    background: rgba(196,155,175,0.15);
+    bottom: 60px; left: 5%;
+    animation: blobDrift 15s ease-in-out infinite alternate-reverse;
+  }
+
+  .hero-inner {
+    position: relative; z-index: 1;
+    display: flex; align-items: center;
+    justify-content: space-between;
+    width: 100%; max-width: 1200px;
+    margin: 0 auto; gap: 60px;
+  }
+
+  .hero-text { flex: 1; max-width: 600px; }
+
+  .hero-eyebrow {
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-size: 0.75rem;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--rose);
+    margin-bottom: 16px;
+    opacity: 0;
+    animation: fadeUp 0.8s ease 0.3s forwards;
+  }
+
+  .hero-title {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(2.8rem, 5vw, 4.8rem);
+    font-weight: 700;
+    line-height: 1.1;
+    color: var(--cocoa);
+    letter-spacing: -0.03em;
+    margin-bottom: 12px;
+    opacity: 0;
+    animation: fadeUp 0.8s ease 0.5s forwards;
+  }
+  .hero-title em { color: var(--rose); font-style: italic; }
+
+  .hero-subtitle {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.4rem;
+    color: var(--muted);
+    font-style: italic;
+    margin-bottom: 24px;
+    opacity: 0;
+    animation: fadeUp 0.8s ease 0.7s forwards;
+  }
+
+  .hero-body {
+    font-size: 0.95rem;
+    line-height: 1.8;
+    color: var(--muted);
+    max-width: 480px;
+    margin-bottom: 40px;
+    opacity: 0;
+    animation: fadeUp 0.8s ease 0.9s forwards;
+  }
+
+  .hero-ctas {
+    display: flex; gap: 14px; flex-wrap: wrap;
+    opacity: 0;
+    animation: fadeUp 0.8s ease 1.1s forwards;
+  }
+
+  .btn-primary {
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-size: 0.82rem;
+    letter-spacing: 0.08em;
+    padding: 14px 28px;
+    background: var(--cocoa);
+    color: var(--ivory);
+    border: none; border-radius: 40px;
+    cursor: none;
+    transition: all 0.3s ease;
+    text-decoration: none;
+    display: inline-block;
+  }
+  .btn-primary:hover {
+    background: var(--rose);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 24px rgba(196,155,175,0.4);
+  }
+
+  .btn-secondary {
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-size: 0.82rem;
+    letter-spacing: 0.08em;
+    padding: 13px 28px;
+    background: transparent;
+    color: var(--cocoa);
+    border: 1.5px solid rgba(70,56,64,0.25);
+    border-radius: 40px;
+    cursor: none;
+    transition: all 0.3s ease;
+    text-decoration: none;
+    display: inline-block;
+  }
+  .btn-secondary:hover {
+    border-color: var(--rose);
+    color: var(--rose);
+    transform: translateY(-2px);
+  }
+
+  .hero-visual {
+    flex: 0 0 340px;
+    display: flex; align-items: center; justify-content: center;
+    position: relative;
+    opacity: 0;
+    animation: fadeIn 1s ease 1s forwards;
+  }
+
+  .hero-blob-inner {
+    position: absolute;
+    width: 300px; height: 300px;
+    background: radial-gradient(circle, rgba(252,231,239,0.9) 0%, rgba(196,155,175,0.2) 70%, transparent 100%);
+    border-radius: 50%;
+    filter: blur(30px);
+    animation: blobPulse 4s ease-in-out infinite;
+  }
+
+  .hero-avatar {
+    width: 280px;
+    position: relative; z-index: 1;
+    image-rendering: pixelated;
+    animation: float 3s ease-in-out infinite;
+    filter: drop-shadow(0 16px 40px rgba(196,155,175,0.4));
+  }
+
+  .sparkle-hero {
+    position: absolute;
+    font-size: 1rem;
+    pointer-events: none;
+    animation: sparkleFloat 3s ease-in-out infinite;
+  }
+  .sparkle-hero:nth-child(1) { top: 15%; left: 8%; animation-delay: 0s; }
+  .sparkle-hero:nth-child(2) { top: 20%; right: 5%; animation-delay: 0.8s; }
+  .sparkle-hero:nth-child(3) { bottom: 25%; left: 5%; animation-delay: 1.6s; }
+  .sparkle-hero:nth-child(4) { bottom: 20%; right: 10%; animation-delay: 2.4s; }
+
+  /* SECTION BASE */
+  section { padding: 100px 5%; }
+
+  .section-label {
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-size: 0.72rem;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--rose);
+    margin-bottom: 12px;
+  }
+  .section-title {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(2rem, 4vw, 3.2rem);
+    font-weight: 600;
+    color: var(--cocoa);
+    letter-spacing: -0.02em;
+    line-height: 1.15;
+  }
+  .section-title em { font-style: italic; color: var(--rose); }
+
+  /* ABOUT */
+  #about {
+    background: white;
+    position: relative; overflow: hidden;
+  }
+
+  .about-watermark {
+    position: absolute;
+    top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    width: 400px; opacity: 0.04;
+    pointer-events: none;
+    filter: blur(1px);
+  }
+
+  .about-inner {
+    max-width: 1100px; margin: 0 auto;
+    display: grid; grid-template-columns: 1fr 1fr;
+    gap: 80px; align-items: start;
+    position: relative; z-index: 1;
+  }
+
+  .about-left { display: flex; flex-direction: column; gap: 24px; }
+
+  .about-photo-card {
+    background: var(--blush);
+    border-radius: 20px;
+    overflow: hidden;
+    aspect-ratio: 4/5;
+    position: relative;
+    box-shadow: 0 20px 60px rgba(196,155,175,0.2);
+    transition: transform 0.4s ease;
+  }
+  .about-photo-card:hover { transform: translateY(-6px) rotate(0.5deg); }
+  .about-photo-placeholder {
+    width: 100%; height: 100%;
+    display: flex; align-items: center; justify-content: center;
+    flex-direction: column; gap: 12px;
+    background: linear-gradient(135deg, var(--blush) 0%, rgba(196,155,175,0.3) 100%);
+  }
+  .about-photo-placeholder img {
+    width: 120px;
+    image-rendering: pixelated;
+    animation: float 3s ease-in-out infinite;
+    filter: drop-shadow(0 8px 20px rgba(196,155,175,0.4));
+  }
+  .about-photo-placeholder p {
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    color: var(--rose);
+    font-size: 0.9rem;
+  }
+
+  .about-right { display: flex; flex-direction: column; gap: 28px; }
+
+  .about-intro {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.35rem;
+    line-height: 1.65;
+    color: var(--cocoa);
+    font-style: italic;
+  }
+  .about-body {
+    font-size: 0.93rem;
+    line-height: 1.82;
+    color: var(--muted);
+  }
+
+  .about-cards { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+
+  .about-card {
+    background: var(--ivory);
+    border: 1px solid rgba(196,155,175,0.15);
+    border-radius: 14px;
+    padding: 18px 20px;
+    transition: all 0.3s ease;
+    cursor: default;
+  }
+  .about-card:hover {
+    background: var(--blush);
+    border-color: rgba(196,155,175,0.3);
+    transform: translateY(-3px);
+    box-shadow: 0 8px 24px rgba(196,155,175,0.15);
+  }
+  .about-card-label {
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-size: 0.65rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--rose);
+    margin-bottom: 10px;
+  }
+  .about-card ul { list-style: none; }
+  .about-card ul li {
+    font-size: 0.83rem;
+    color: var(--muted);
+    padding: 3px 0;
+    font-family: 'Inter', sans-serif;
+  }
+  .about-card ul li::before { content: '— '; color: var(--rose-light); }
+
+  /* PROJECTS */
+  #projects { background: var(--ivory); position: relative; }
+
+  .projects-header {
+    max-width: 1100px; margin: 0 auto 60px;
+  }
+  .projects-sub {
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    color: var(--muted);
+    font-size: 1.1rem;
+    margin-top: 10px;
+  }
+
+  .projects-tabs {
+    display: flex; gap: 8px; flex-wrap: wrap;
+    margin-top: 28px;
+  }
+  .tab-btn {
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-size: 0.75rem;
+    letter-spacing: 0.08em;
+    padding: 8px 18px;
+    border: 1.5px solid rgba(196,155,175,0.25);
+    border-radius: 30px;
+    background: transparent;
+    color: var(--muted);
+    cursor: none;
+    transition: all 0.25s ease;
+  }
+  .tab-btn.active, .tab-btn:hover {
+    background: var(--cocoa);
+    color: var(--ivory);
+    border-color: var(--cocoa);
+  }
+
+  /* FLOATING CARD STACK */
+  .projects-stage {
+    max-width: 1100px; margin: 0 auto;
+    position: relative;
+    min-height: 520px;
+    perspective: 1200px;
+  }
+
+  .card-stack {
+    position: relative;
+    width: 100%;
+    min-height: 480px;
+  }
+
+  .proj-card {
+    position: absolute;
+    width: calc(33% - 16px);
+    min-width: 260px;
+    background: white;
+    border-radius: 20px;
+    overflow: hidden;
+    box-shadow: 0 8px 32px rgba(70,56,64,0.08), 0 2px 8px rgba(196,155,175,0.1);
+    cursor: none;
+    transition: all 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+    transform-origin: center bottom;
+    border: 1px solid rgba(196,155,175,0.1);
+  }
+
+  .proj-card:hover {
+    transform: translateY(-12px) scale(1.02) !important;
+    box-shadow: 0 24px 64px rgba(70,56,64,0.14), 0 8px 24px rgba(196,155,175,0.2);
+    z-index: 10 !important;
+  }
+
+  .proj-card-thumb {
+    height: 160px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 2.5rem;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .proj-card-body { padding: 20px 22px 24px; }
+
+  .proj-category {
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-size: 0.65rem;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--rose);
+    margin-bottom: 8px;
+  }
+  .proj-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.05rem;
+    font-weight: 600;
+    color: var(--cocoa);
+    margin-bottom: 8px;
+    line-height: 1.3;
+  }
+  .proj-desc {
+    font-size: 0.8rem;
+    line-height: 1.65;
+    color: var(--muted);
+    margin-bottom: 14px;
+  }
+  .proj-tools {
+    display: flex; flex-wrap: wrap; gap: 5px;
+    margin-bottom: 14px;
+  }
+  .tool-tag {
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-size: 0.62rem;
+    letter-spacing: 0.05em;
+    padding: 3px 9px;
+    background: var(--blush);
+    color: var(--rose-dark);
+    border-radius: 20px;
+  }
+  .proj-link {
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-size: 0.72rem;
+    letter-spacing: 0.08em;
+    color: var(--cocoa);
+    text-decoration: none;
+    border-bottom: 1px solid rgba(70,56,64,0.2);
+    transition: all 0.2s;
+    padding-bottom: 1px;
+  }
+  .proj-link:hover { color: var(--rose); border-color: var(--rose); }
+
+  .nav-arrows {
+    display: flex; gap: 10px;
+    justify-content: center;
+    margin-top: 40px;
+  }
+  .arrow-btn {
+    width: 44px; height: 44px;
+    border-radius: 50%;
+    border: 1.5px solid rgba(196,155,175,0.3);
+    background: white;
+    color: var(--cocoa);
+    font-size: 1.1rem;
+    cursor: none;
+    display: flex; align-items: center; justify-content: center;
+    transition: all 0.25s ease;
+  }
+  .arrow-btn:hover {
+    background: var(--cocoa);
+    color: var(--ivory);
+    border-color: var(--cocoa);
+    transform: scale(1.05);
+  }
+
+  /* CONTACT */
+  #contact {
+    background: white;
+    position: relative; overflow: hidden;
+  }
+
+  .contact-inner {
+    max-width: 900px; margin: 0 auto;
+    display: grid; grid-template-columns: 1fr 1fr;
+    gap: 80px; align-items: start;
+    position: relative; z-index: 1;
+  }
+
+  .contact-left { }
+  .contact-title {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(2rem, 4vw, 3rem);
+    font-weight: 600;
+    line-height: 1.15;
+    color: var(--cocoa);
+    letter-spacing: -0.02em;
+    margin-bottom: 18px;
+  }
+  .contact-title em { font-style: italic; color: var(--rose); }
+
+  .contact-body {
+    font-size: 0.9rem;
+    line-height: 1.8;
+    color: var(--muted);
+    margin-bottom: 32px;
+  }
+  .contact-socials { display: flex; flex-direction: column; gap: 10px; }
+  .social-link {
+    display: flex; align-items: center; gap: 10px;
+    text-decoration: none;
+    color: var(--muted);
+    font-size: 0.85rem;
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    transition: color 0.2s;
+    padding: 10px 14px;
+    border-radius: 10px;
+    border: 1px solid rgba(196,155,175,0.12);
+    background: var(--ivory);
+  }
+  .social-link:hover { color: var(--cocoa); border-color: var(--rose); background: var(--blush); }
+  .social-icon { font-size: 1.1rem; }
+
+  .contact-form { display: flex; flex-direction: column; gap: 14px; }
+  .form-group { display: flex; flex-direction: column; gap: 6px; }
+  .form-label {
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-size: 0.7rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+  .form-input {
+    background: var(--ivory);
+    border: 1.5px solid rgba(196,155,175,0.2);
+    border-radius: 10px;
+    padding: 12px 16px;
+    font-family: 'Inter', sans-serif;
+    font-size: 0.88rem;
+    color: var(--cocoa);
+    outline: none;
+    transition: border-color 0.2s;
+    resize: none;
+    cursor: none;
+  }
+  .form-input::placeholder { color: rgba(125,106,114,0.5); }
+  .form-input:focus { border-color: var(--rose); background: white; }
+
+  .form-note {
+    font-size: 0.75rem;
+    color: var(--muted);
+    font-style: italic;
+    opacity: 0.7;
+  }
+
+  /* FOOTER */
+  footer {
+    background: var(--cocoa);
+    color: var(--blush);
+    padding: 50px 5% 30px;
+    position: relative; overflow: hidden;
+  }
+
+  .footer-wm {
+    position: absolute;
+    top: 50%; left: 50%;
+    transform: translate(-50%,-50%);
+    width: 200px; opacity: 0.05;
+    pointer-events: none;
+    filter: invert(1);
+  }
+
+  .footer-inner {
+    max-width: 1100px; margin: 0 auto;
+    display: flex; align-items: center; justify-content: space-between;
+    position: relative; z-index: 1;
+    flex-wrap: wrap; gap: 20px;
+  }
+  .footer-left { display: flex; flex-direction: column; gap: 6px; }
+  .footer-name {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.1rem;
+    color: var(--ivory);
+    letter-spacing: -0.01em;
+  }
+  .footer-tagline {
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-size: 0.85rem;
+    color: var(--rose-light);
+    opacity: 0.7;
+  }
+  .footer-copy {
+    font-size: 0.72rem;
+    color: var(--muted);
+    opacity: 0.6;
+    margin-top: 4px;
+  }
+  .footer-avatar {
+    width: 70px;
+    image-rendering: pixelated;
+    animation: float 3s ease-in-out infinite;
+    opacity: 0.85;
+    filter: drop-shadow(0 4px 12px rgba(196,155,175,0.3));
+  }
+
+  /* ANIMATIONS */
+  @keyframes float {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-12px); }
+  }
+  @keyframes blobDrift {
+    0% { transform: translate(0, 0) scale(1); }
+    100% { transform: translate(30px, 20px) scale(1.08); }
+  }
+  @keyframes blobPulse {
+    0%, 100% { transform: scale(1); opacity: 0.8; }
+    50% { transform: scale(1.1); opacity: 1; }
+  }
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(24px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+  @keyframes greetFade {
+    0% { opacity: 0; transform: translateY(10px); }
+    100% { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes loadBar {
+    from { width: 0; }
+    to { width: 100%; }
+  }
+  @keyframes sparklePop {
+    0% { opacity: 0; transform: scale(0) rotate(0deg); }
+    50% { opacity: 1; transform: scale(1.4) rotate(180deg); }
+    100% { opacity: 0; transform: scale(0.8) rotate(360deg); }
+  }
+  @keyframes sparkleFloat {
+    0%, 100% { transform: translateY(0) scale(1); opacity: 0.6; }
+    50% { transform: translateY(-8px) scale(1.2); opacity: 1; }
+  }
+  @keyframes scrollReveal {
+    from { opacity: 0; transform: translateY(36px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .reveal { opacity: 0; }
+  .reveal.visible { animation: scrollReveal 0.7s ease forwards; }
+
+  /* RESPONSIVE */
+  @media (max-width: 768px) {
+    .hero-inner { flex-direction: column; gap: 40px; text-align: center; }
+    .hero-visual { order: -1; flex: none; }
+    .hero-avatar { width: 200px; }
+    .hero-ctas { justify-content: center; }
+    .about-inner { grid-template-columns: 1fr; gap: 40px; }
+    .about-cards { grid-template-columns: 1fr; }
+    .contact-inner { grid-template-columns: 1fr; gap: 40px; }
+    .proj-card { width: calc(80% - 16px); min-width: 240px; }
+    .nav-links { display: none; }
+  }
+
+  /* MOUSE GLOW */
+  .mouse-glow {
+    position: fixed;
+    pointer-events: none;
+    width: 300px; height: 300px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(252,231,239,0.25) 0%, transparent 70%);
+    transform: translate(-50%, -50%);
+    z-index: 1;
+    transition: opacity 0.3s;
+  }
+</style>
+</head>
+<body>
+
+<!-- MOUSE GLOW -->
+<div class="mouse-glow" id="mouseGlow"></div>
+
+<!-- CUSTOM CURSOR -->
+<div class="cursor" id="cursor"></div>
+<div class="cursor-ring" id="cursorRing"></div>
+
+<!-- LOADING SCREEN -->
+<div id="loading">
+  <img src="avatar1.png" alt="Salwa mascot" class="loading-avatar" id="loadingAvatar"/>
+  <div class="loading-greeting" id="greetingText">Hello</div>
+  <div class="loading-name">Salwa Fajariah</div>
+  <div class="loading-sub">Data, AI & Strategy Enthusiast</div>
+  <div class="loading-bar"><div class="loading-bar-fill"></div></div>
+</div>
+
+<!-- NAVBAR -->
+<nav id="navbar">
+  <a href="#hero" class="nav-logo">
+    <img src="logo1.png" alt="Salwa logo"/>
+    <span>Salwa Fajariah</span>
+  </a>
+  <ul class="nav-links">
+    <li><a href="#about" data-i18n="nav_about">About</a></li>
+    <li><a href="#projects" data-i18n="nav_work">Work</a></li>
+    <li><a href="#contact" data-i18n="nav_contact">Contact</a></li>
+  </ul>
+  <div class="lang-switcher">
+    <button class="lang-btn active" onclick="setLang('en')">EN</button>
+    <button class="lang-btn" onclick="setLang('id')">ID</button>
+    <button class="lang-btn" onclick="setLang('ko')">KO</button>
+    <button class="lang-btn" onclick="setLang('de')">DE</button>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section id="hero">
+  <div class="hero-blob hero-blob-1"></div>
+  <div class="hero-blob hero-blob-2"></div>
+  <div class="hero-inner">
+    <div class="hero-text">
+      <p class="hero-eyebrow" data-i18n="hero_eyebrow">Computer Science Student · Indonesia</p>
+      <h1 class="hero-title">I'm <em>Salwa</em><br/>Fajariah</h1>
+      <p class="hero-subtitle" data-i18n="hero_sub">Data, AI & Strategy Enthusiast</p>
+      <p class="hero-body" data-i18n="hero_body">I enjoy exploring the space between data, systems, strategy, and people. Most of my work starts from curiosity: how can technology feel more useful, thoughtful, and human?</p>
+      <div class="hero-ctas">
+        <a href="#projects" class="btn-primary" data-i18n="hero_cta1">Explore Projects</a>
+        <a href="#contact" class="btn-secondary" data-i18n="hero_cta2">Let's Connect</a>
+      </div>
+    </div>
+    <div class="hero-visual">
+      <span class="sparkle-hero">✦</span>
+      <span class="sparkle-hero">✧</span>
+      <span class="sparkle-hero">✦</span>
+      <span class="sparkle-hero">✧</span>
+      <div class="hero-blob-inner"></div>
+      <img src="avatar1.png" alt="Salwa pixel avatar" class="hero-avatar"/>
+    </div>
+  </div>
+</section>
+
+<!-- ABOUT -->
+<section id="about">
+  <img src="logo1.png" alt="" class="about-watermark"/>
+  <div class="about-inner">
+    <div class="about-left reveal">
+      <div class="about-photo-card">
+        <div class="about-photo-placeholder">
+          <img src="avatar1.png" alt="Salwa avatar"/>
+          <p>profile photo coming soon ✦</p>
+        </div>
+      </div>
+    </div>
+    <div class="about-right">
+      <p class="section-label reveal">About</p>
+      <h2 class="section-title reveal">A curious mind at the <em>intersection</em></h2>
+      <p class="about-intro reveal" data-i18n="about_intro">I'm Salwa Fajariah, an undergraduate computer science student exploring data, AI, analytics, and digital systems.</p>
+      <p class="about-body reveal" data-i18n="about_body">My journey started from curiosity about how systems work, how data tells stories, and how technology can become more human-centered. I'm drawn to the space where analytical thinking meets strategic vision — where numbers become narratives, and products become experiences.</p>
+      <div class="about-cards reveal">
+        <div class="about-card">
+          <p class="about-card-label" data-i18n="card_focus">Current Focus</p>
+          <ul>
+            <li data-i18n="focus1"> Machine Learning Foundations</li>
+            <li data-i18n="focus2"> SQL Optimization</li>
+            <li data-i18n="focus3"> German A2</li>
+            <li data-i18n="focus4"> Product Analytics</li>
+          </ul>
+        </div>
+        <div class="about-card">
+          <p class="about-card-label" data-i18n="card_values">Values</p>
+          <ul>
+            <li data-i18n="val1"> Curiosity</li>
+            <li data-i18n="val2"> Clarity</li>
+            <li data-i18n="val3"> Empathy</li>
+            <li data-i18n="val4"> Consistency</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PROJECTS -->
+<section id="projects">
+  <div class="projects-header reveal">
+    <p class="section-label" data-i18n="proj_label">Selected Works</p>
+    <h2 class="section-title">Things I've <em>built</em> & explored</h2>
+    <p class="projects-sub" data-i18n="proj_sub">A growing collection across data, strategy, digital systems, and analytics.</p>
+    <div class="projects-tabs">
+      <button class="tab-btn active" onclick="filterProjects('all')" data-i18n="tab_all">All</button>
+      <button class="tab-btn" onclick="filterProjects('data')" data-i18n="tab_data">Data & Analytics</button>
+      <button class="tab-btn" onclick="filterProjects('ai')" data-i18n="tab_ai">AI Exploration</button>
+      <button class="tab-btn" onclick="filterProjects('product')" data-i18n="tab_product">Product & Strategy</button>
+      <button class="tab-btn" onclick="filterProjects('digital')" data-i18n="tab_digital">Digital Systems</button>
+    </div>
+  </div>
+
+  <div class="projects-stage">
+    <div class="card-stack" id="cardStack">
+      <!-- Cards injected by JS -->
+    </div>
+    <div class="nav-arrows">
+      <button class="arrow-btn" onclick="scrollCards(-1)">←</button>
+      <button class="arrow-btn" onclick="scrollCards(1)">→</button>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact">
+  <div class="contact-inner">
+    <div class="contact-left reveal">
+      <h2 class="contact-title" data-i18n="contact_title">Let's <em>connect.</em><br/>or simply be friends?</h2>
+      <p class="contact-body" data-i18n="contact_body">Open for collaboration, internship opportunities, analytics inquiries, and friendly professional connections. Say hi, I don't bite.</p>
+      <div class="contact-socials">
+        <a href="mailto:salwafajariah38@gmail.com" class="social-link">
+          <span class="social-icon">✉</span>
+          <span>Email</span>
+        </a>
+        <a href="https://linkedin.com/in/salwafajariah" target="_blank" class="social-link">
+          <span class="social-icon">🔗</span>
+          <span>linkedin</span>
+        </a>
+        <a href="https://instagram.com/slwaafjr" target="_blank" class="social-link">
+          <span class="social-icon">◎</span>
+          <span>Instagram</span>
+        </a>
+      </div>
+    </div>
+    <div class="contact-form reveal">
+      <p class="section-label" data-i18n="form_label">Send a message</p>
+      <div class="form-group">
+        <label class="form-label" data-i18n="form_name">Name</label>
+        <input type="text" class="form-input" placeholder="Your name" data-i18n-ph="form_name_ph"/>
+      </div>
+      <div class="form-group">
+        <label class="form-label" data-i18n="form_inst">Institution / Social</label>
+        <input type="text" class="form-input" placeholder="Where are you from?" data-i18n-ph="form_inst_ph"/>
+      </div>
+      <div class="form-group">
+        <label class="form-label" data-i18n="form_msg">Short Message</label>
+        <textarea class="form-input" rows="5" placeholder="What's on your mind?" data-i18n-ph="form_msg_ph"></textarea>
+      </div>
+      <p class="form-note" data-i18n="form_note">✦ This form is a placeholder — reach me directly via email or LinkedIn for now.</p>
+      <button class="btn-primary" style="width:100%;margin-top:4px;" data-i18n="form_btn">Send Message ✦</button>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <img src="logo1.png" alt="" class="footer-wm"/>
+  <div class="footer-inner">
+    <div class="footer-left">
+      <span class="footer-name">Salwa Fajariah</span>
+      <span class="footer-tagline">Building analytical and human-centered digital solutions.</span>
+      <span class="footer-copy">© 2026 Salwa Fajariah · Made with love ✦</span>
+    </div>
+    <img src="logo1.png" alt="mascot" class="footer-avatar"/>
+  </div>
+</footer>
+
+<script>
+// ——— CURSOR ———
+const cursor = document.getElementById('cursor');
+const ring = document.getElementById('cursorRing');
+const glow = document.getElementById('mouseGlow');
+let mx = 0, my = 0, rx = 0, ry = 0;
+
+document.addEventListener('mousemove', e => {
+  mx = e.clientX; my = e.clientY;
+  cursor.style.left = mx + 'px';
+  cursor.style.top = my + 'px';
+  glow.style.left = mx + 'px';
+  glow.style.top = my + 'px';
+});
+(function animRing() {
+  rx += (mx - rx) * 0.12;
+  ry += (my - ry) * 0.12;
+  ring.style.left = rx + 'px';
+  ring.style.top = ry + 'px';
+  requestAnimationFrame(animRing);
+})();
+
+// ——— LOADING ———
+const greetings = [
+  'Halo', '안녕하세요', 'Hello', 'こんにちは', 'Halo', 'مرحبا', 'Hola', 'Привет', 'Bonjour', '你好', 'Ciao', 'नमस्ते', 'Olá'
+];
+let gi = 0;
+const greetEl = document.getElementById('greetingText');
+
+function cycleGreet() {
+  greetEl.style.animation = 'none';
+  greetEl.offsetHeight;
+  greetEl.style.animation = 'greetFade 1s ease';
+  greetEl.textContent = greetings[gi % greetings.length];
+  gi++;
+}
+cycleGreet();
+const greetTimer = setInterval(cycleGreet, 280);
+
+// Sparkles on loading screen
+function spawnSparkle() {
+  const s = document.createElement('div');
+  s.className = 'sparkle';
+  s.textContent = ['✦','✧','⋆','✺'][Math.floor(Math.random()*4)];
+  s.style.left = Math.random()*90 + 5 + '%';
+  s.style.top = Math.random()*90 + 5 + '%';
+  s.style.color = ['#C49BAF','#FCE7EF','#a8809a'][Math.floor(Math.random()*3)];
+  document.getElementById('loading').appendChild(s);
+  setTimeout(() => s.remove(), 1200);
+}
+const sparkTimer = setInterval(spawnSparkle, 300);
+
+setTimeout(() => {
+  clearInterval(greetTimer);
+  clearInterval(sparkTimer);
+  const loading = document.getElementById('loading');
+  loading.classList.add('fade-out');
+  setTimeout(() => { loading.style.display = 'none'; }, 800);
+}, 3600);
+
+// ——— NAVBAR SCROLL ———
+window.addEventListener('scroll', () => {
+  document.getElementById('navbar').classList.toggle('scrolled', window.scrollY > 40);
+});
+
+// ——— SCROLL REVEAL ———
+const reveals = document.querySelectorAll('.reveal');
+const observer = new IntersectionObserver(entries => {
+  entries.forEach((e, i) => {
+    if (e.isIntersecting) {
+      setTimeout(() => e.target.classList.add('visible'), i * 80);
+      observer.unobserve(e.target);
+    }
+  });
+}, { threshold: 0.12 });
+reveals.forEach(r => observer.observe(r));
+
+// ——— PROJECTS DATA ———
+const projects = [
+  {
+    cat: 'data', catLabel: 'Data & Analytics',
+    title: 'Supermarket Sales Analysis',
+    desc: 'Excel-based deep dive into sales trends, seasonality, and customer segments across retail branches.',
+    tools: ['Excel', 'Pivot Tables', 'Data Visualization'],
+    emoji: '🛒', bg: 'linear-gradient(135deg, #FCE7EF 0%, #f5d5e5 100%)',
+    link: '#'
+  },
+  {
+    cat: 'data', catLabel: 'Data & Analytics',
+    title: 'Customer Retention Dashboard',
+    desc: 'Churn analysis and marketing dashboard tracking retention metrics across customer cohorts.',
+    tools: ['SQL', 'Looker Studio', 'Python'],
+    emoji: '📊', bg: 'linear-gradient(135deg, #f0e8f5 0%, #e8d5ed 100%)',
+    link: '#'
+  },
+  {
+    cat: 'ai', catLabel: 'AI Exploration',
+    title: 'NLP Sentiment Classifier',
+    desc: 'Text classification experiment using pre-trained models to analyze social media sentiment.',
+    tools: ['Python', 'HuggingFace', 'NLP'],
+    emoji: '🤖', bg: 'linear-gradient(135deg, #e8f0f5 0%, #d5e8ed 100%)',
+    link: '#'
+  },
+  {
+    cat: 'ai', catLabel: 'AI Exploration',
+    title: 'Recommendation System Prototype',
+    desc: 'Collaborative filtering prototype built as part of an AI/ML foundations course project.',
+    tools: ['Python', 'scikit-learn', 'Pandas'],
+    emoji: '💡', bg: 'linear-gradient(135deg, #f5f0e8 0%, #ede8d5 100%)',
+    link: '#'
+  },
+  {
+    cat: 'product', catLabel: 'Product & Strategy',
+    title: 'KantorKu PRD',
+    desc: 'Product Requirements Document for a co-working platform, developed as an internship take-home case study.',
+    tools: ['Notion', 'Figma', 'Product Strategy'],
+    emoji: '📋', bg: 'linear-gradient(135deg, #FCE7EF 0%, #fce0ea 100%)',
+    link: '#'
+  },
+  {
+    cat: 'product', catLabel: 'Product & Strategy',
+    title: 'Campaign Strategy Deck',
+    desc: 'End-to-end digital campaign strategy developed during internship, covering market research, execution, and KPIs.',
+    tools: ['Canva', 'Google Analytics', 'Meta Ads'],
+    emoji: '📢', bg: 'linear-gradient(135deg, #f5e8f0 0%, #edd5e8 100%)',
+    link: '#'
+  },
+  {
+    cat: 'digital', catLabel: 'Digital Systems',
+    title: 'UMKM Sales Information System',
+    desc: 'Full-stack web system for small business sales management with admin panel and transaction reports.',
+    tools: ['PHP', 'MySQL', 'AJAX', 'Bootstrap'],
+    emoji: '💻', bg: 'linear-gradient(135deg, #e8f5e8 0%, #d5edd5 100%)',
+    link: '#'
+  },
+  {
+    cat: 'digital', catLabel: 'Digital Systems',
+    title: 'Database Systems Final Project',
+    desc: 'Relational database design and implementation with optimized queries for a service management application.',
+    tools: ['MySQL', 'SQL', 'ERD Design'],
+    emoji: '🗄️', bg: 'linear-gradient(135deg, #f0f5e8 0%, #e8edd5 100%)',
+    link: '#'
+  }
+];
+
+let currentFilter = 'all';
+let cardOffset = 0;
+const CARDS_PER_VIEW = 3;
+
+function getFiltered() {
+  return currentFilter === 'all' ? projects : projects.filter(p => p.cat === currentFilter);
+}
+
+function renderCards() {
+  const stack = document.getElementById('cardStack');
+  stack.innerHTML = '';
+  const filtered = getFiltered();
+  const total = filtered.length;
+  const maxOffset = Math.max(0, total - CARDS_PER_VIEW);
+  if (cardOffset > maxOffset) cardOffset = maxOffset;
+  const visible = filtered.slice(cardOffset, cardOffset + CARDS_PER_VIEW);
+
+  visible.forEach((p, i) => {
+    const card = document.createElement('div');
+    card.className = 'proj-card';
+    const left = i * (33.5);
+    const delay = i * 80;
+    card.style.cssText = `left:${left}%; top:0; z-index:${i+1}; opacity:0; transform: translateY(40px); transition: all 0.5s cubic-bezier(0.34,1.56,0.64,1) ${delay}ms;`;
+    card.innerHTML = `
+      <div class="proj-card-thumb" style="background:${p.bg}">
+        <span style="font-size:2.8rem">${p.emoji}</span>
+      </div>
+      <div class="proj-card-body">
+        <p class="proj-category">${p.catLabel}</p>
+        <h3 class="proj-title">${p.title}</h3>
+        <p class="proj-desc">${p.desc}</p>
+        <div class="proj-tools">${p.tools.map(t=>`<span class="tool-tag">${t}</span>`).join('')}</div>
+        <a href="${p.link}" class="proj-link">View Project →</a>
+      </div>`;
+    stack.appendChild(card);
+    setTimeout(() => {
+      card.style.opacity = '1';
+      card.style.transform = 'translateY(0)';
+    }, 50 + delay);
+  });
+
+  // Update stack min-height based on card count
+  stack.style.minHeight = total > 0 ? '480px' : '100px';
+}
+
+function filterProjects(cat) {
+  currentFilter = cat;
+  cardOffset = 0;
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  event.target.classList.add('active');
+  renderCards();
+}
+
+function scrollCards(dir) {
+  const filtered = getFiltered();
+  const maxOffset = Math.max(0, filtered.length - CARDS_PER_VIEW);
+  cardOffset = Math.max(0, Math.min(maxOffset, cardOffset + dir));
+  renderCards();
+}
+
+renderCards();
+
+// ——— I18N ———
+const i18n = {
+  en: {
+    nav_about: 'About', nav_work: 'Work', nav_contact: 'Contact',
+    hero_eyebrow: 'Computer Science Student · Indonesia',
+    hero_sub: 'Data, AI & Strategy Enthusiast',
+    hero_body: 'I enjoy exploring the space between data, systems, strategy, and people. Most of my work starts from curiosity: how can technology feel more useful, thoughtful, and human?',
+    hero_cta1: 'Explore Projects', hero_cta2: "Let's Connect",
+    about_intro: "I'm Salwa Fajariah, an undergraduate computer science student exploring data, AI, analytics, and digital systems.",
+    about_body: "My journey started from curiosity about how systems work, how data tells stories, and how technology can become more human-centered. I'm drawn to the space where analytical thinking meets strategic vision.",
+    card_focus: 'Current Focus', card_values: 'Values',
+    focus1: 'Machine Learning Foundations', focus2: 'SQL Optimization', focus3: 'German A2', focus4: 'Product Analytics',
+    val1: 'Curiosity', val2: 'Clarity', val3: 'Empathy', val4: 'Consistency',
+    proj_label: 'Selected Works', proj_sub: 'A growing collection across data, strategy, digital systems, and analytics.',
+    tab_all: 'All', tab_data: 'Data & Analytics', tab_ai: 'AI Exploration', tab_product: 'Product & Strategy', tab_digital: 'Digital Systems',
+    contact_title: "Let's connect.\nor simply be friends?",
+    contact_body: "Open for collaboration, internship opportunities, analytics inquiries, and friendly professional connections. Say hi, I don't bite.",
+    form_label: 'Send a message', form_name: 'Name', form_name_ph: 'Your name', form_inst: 'Institution / Social', form_inst_ph: 'Where are you from?', form_msg: 'Short Message', form_msg_ph: "What's on your mind?",
+    form_note: '✦ This form is a placeholder — reach me directly via email or LinkedIn for now.',
+    form_btn: 'Send Message ✦',
+  },
+  id: {
+    nav_about: 'Tentang', nav_work: 'Karya', nav_contact: 'Kontak',
+    hero_eyebrow: 'Mahasiswa Ilmu Komputer · Indonesia',
+    hero_sub: 'Penggemar Data, AI & Strategi',
+    hero_body: 'Saya senang mengeksplorasi ruang antara data, sistem, strategi, dan manusia. Sebagian besar pekerjaan saya berawal dari rasa ingin tahu: bagaimana teknologi bisa terasa lebih berguna, penuh pemikiran, dan manusiawi?',
+    hero_cta1: 'Lihat Proyek', hero_cta2: 'Mari Terhubung',
+    about_intro: 'Saya Salwa Fajariah, mahasiswi ilmu komputer yang mengeksplorasi data, AI, analitik, dan sistem digital.',
+    about_body: 'Perjalanan saya dimulai dari rasa ingin tahu tentang bagaimana sistem bekerja, bagaimana data bercerita, dan bagaimana teknologi bisa menjadi lebih human-centered.',
+    card_focus: 'Fokus Sekarang', card_values: 'Nilai',
+    focus1: 'Fondasi Machine Learning', focus2: 'Optimasi SQL', focus3: 'Bahasa Jerman A2', focus4: 'Analitik Produk',
+    val1: 'Rasa Ingin Tahu', val2: 'Kejelasan', val3: 'Empati', val4: 'Konsistensi',
+    proj_label: 'Karya Pilihan', proj_sub: 'Koleksi yang terus berkembang di data, strategi, sistem digital, dan analitik.',
+    tab_all: 'Semua', tab_data: 'Data & Analitik', tab_ai: 'Eksplorasi AI', tab_product: 'Produk & Strategi', tab_digital: 'Sistem Digital',
+    contact_title: 'Mari terhubung.\natau sekadar berteman?',
+    contact_body: 'Terbuka untuk kolaborasi, peluang magang, pertanyaan analitik, dan koneksi profesional yang ramah.',
+    form_label: 'Kirim pesan', form_name: 'Nama', form_name_ph: 'Namamu', form_inst: 'Institusi / Sosial', form_inst_ph: 'Kamu dari mana?', form_msg: 'Pesan Singkat', form_msg_ph: 'Ada yang ingin kamu sampaikan?',
+    form_note: '✦ Form ini masih placeholder — hubungi saya langsung via email atau LinkedIn untuk saat ini.',
+    form_btn: 'Kirim Pesan ✦',
+  },
+  ko: {
+    nav_about: '소개', nav_work: '작업', nav_contact: '연락',
+    hero_eyebrow: '컴퓨터공학과 학생 · 인도네시아',
+    hero_sub: '데이터, AI & 전략 탐구자',
+    hero_body: '저는 데이터, 시스템, 전략, 그리고 사람 사이의 공간을 탐구하는 것을 즐깁니다. 제 대부분의 작업은 호기심에서 시작됩니다.',
+    hero_cta1: '프로젝트 보기', hero_cta2: '연결하기',
+    about_intro: '저는 살와 파자리아입니다. 데이터, AI, 분석, 디지털 시스템을 탐구하는 컴퓨터공학과 학부생입니다.',
+    about_body: '시스템이 어떻게 작동하는지, 데이터가 어떻게 이야기를 전하는지, 기술이 어떻게 더 인간적이 될 수 있는지에 대한 호기심에서 여정이 시작되었습니다.',
+    card_focus: '현재 집중', card_values: '가치',
+    focus1: '머신러닝 기초', focus2: 'SQL 최적화', focus3: '독일어 A2', focus4: '제품 분석',
+    val1: '호기심', val2: '명확성', val3: '공감', val4: '일관성',
+    proj_label: '선별 작업', proj_sub: '데이터, 전략, 디지털 시스템, 분석 분야의 성장하는 컬렉션.',
+    tab_all: '전체', tab_data: '데이터 & 분석', tab_ai: 'AI 탐구', tab_product: '제품 & 전략', tab_digital: '디지털 시스템',
+    contact_title: '연결해요.\n아니면 그냥 친구가 될까요?',
+    contact_body: '협업, 인턴십 기회, 분석 문의, 그리고 친근한 전문적 연결에 열려 있습니다.',
+    form_label: '메시지 보내기', form_name: '이름', form_name_ph: '당신의 이름', form_inst: '기관 / 소셜', form_inst_ph: '어디서 오셨나요?', form_msg: '짧은 메시지', form_msg_ph: '하고 싶은 말은?',
+    form_note: '✦ 이 양식은 플레이스홀더입니다 — 지금은 이메일 또는 LinkedIn으로 직접 연락해 주세요.',
+    form_btn: '메시지 보내기 ✦',
+  },
+  de: {
+    nav_about: 'Über mich', nav_work: 'Arbeiten', nav_contact: 'Kontakt',
+    hero_eyebrow: 'Informatikstudentin · Indonesien',
+    hero_sub: 'Begeistert von Daten, KI & Strategie',
+    hero_body: 'Ich erforsche den Raum zwischen Daten, Systemen, Strategie und Menschen. Die meiste meiner Arbeit beginnt mit Neugier: Wie kann Technologie nützlicher, durchdachter und menschlicher werden?',
+    hero_cta1: 'Projekte ansehen', hero_cta2: 'Kontakt aufnehmen',
+    about_intro: 'Ich bin Salwa Fajariah, eine Informatikstudentin, die Daten, KI, Analytik und digitale Systeme erforscht.',
+    about_body: 'Meine Reise begann mit Neugier darüber, wie Systeme funktionieren, wie Daten Geschichten erzählen und wie Technologie menschenzentrierter werden kann.',
+    card_focus: 'Aktueller Fokus', card_values: 'Werte',
+    focus1: 'Machine-Learning-Grundlagen', focus2: 'SQL-Optimierung', focus3: 'Deutsch A2', focus4: 'Produktanalytik',
+    val1: 'Neugier', val2: 'Klarheit', val3: 'Empathie', val4: 'Konsequenz',
+    proj_label: 'Ausgewählte Arbeiten', proj_sub: 'Eine wachsende Sammlung in Daten, Strategie, digitale Systeme und Analytik.',
+    tab_all: 'Alle', tab_data: 'Daten & Analytik', tab_ai: 'KI-Erkundung', tab_product: 'Produkt & Strategie', tab_digital: 'Digitale Systeme',
+    contact_title: 'Lass uns verbinden.\noder einfach Freunde sein?',
+    contact_body: 'Offen für Zusammenarbeit, Praktikumsmöglichkeiten, Analytikanfragen und freundliche berufliche Verbindungen.',
+    form_label: 'Nachricht senden', form_name: 'Name', form_name_ph: 'Dein Name', form_inst: 'Institution / Sozial', form_inst_ph: 'Woher kommst du?', form_msg: 'Kurze Nachricht', form_msg_ph: 'Was möchtest du sagen?',
+    form_note: '✦ Dieses Formular ist ein Platzhalter — kontaktiere mich direkt per E-Mail oder LinkedIn.',
+    form_btn: 'Nachricht senden ✦',
+  }
+};
+
+let currentLang = 'en';
+function setLang(lang) {
+  currentLang = lang;
+  document.querySelectorAll('.lang-btn').forEach(b => b.classList.remove('active'));
+  document.querySelectorAll('.lang-btn').forEach(b => { if(b.textContent === lang.toUpperCase()) b.classList.add('active'); });
+  const t = i18n[lang];
+  document.querySelectorAll('[data-i18n]').forEach(el => {
+    const key = el.getAttribute('data-i18n');
+    if (t[key]) el.innerHTML = t[key].replace(/\n/g, '<br>');
+  });
+  document.querySelectorAll('[data-i18n-ph]').forEach(el => {
+    const key = el.getAttribute('data-i18n-ph');
+    if (t[key]) el.placeholder = t[key];
+  });
+}
+</script>
+</body>
+</html>
