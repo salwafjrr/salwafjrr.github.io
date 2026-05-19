@@ -659,6 +659,17 @@
     margin-bottom: 18px;
   }
   .contact-title em { font-style: italic; color: var(--rose); }
+  
+  .contact-mini-title {
+  display: inline-block;
+  margin-top: 8px;
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(1.15rem, 2.4vw, 1.7rem);
+  font-weight: 400;
+  font-style: italic;
+  color: var(--rose);
+  letter-spacing: 0;
+}
 
   .contact-body {
     font-size: 0.9rem;
@@ -971,7 +982,8 @@
 <section id="contact">
   <div class="contact-inner">
     <div class="contact-left reveal">
-      <h2 class="contact-title" data-i18n="contact_title">Let's <em>connect.</em><br/>or simply be friends?</h2>
+      <h2 class="contact-title" data-i18n="contact_title">Let's <em>connect.</em><br/>
+          <span class="contact-mini-title">or simply be friends?</span></h2>
       <p class="contact-body" data-i18n="contact_body">Open for collaboration, internship opportunities, analytics inquiries, and friendly professional connections. Say hi, I don't bite.</p>
       <div class="contact-socials">
         <a href="mailto:salwafajariah38@gmail.com" class="social-link">
@@ -1058,7 +1070,7 @@ function cycleGreet() {
   gi++;
 }
 cycleGreet();
-const greetTimer = setInterval(cycleGreet, 280);
+const greetTimer = setInterval(cycleGreet, 1000);
 
 // Sparkles on loading screen
 function spawnSparkle() {
@@ -1079,7 +1091,7 @@ setTimeout(() => {
   const loading = document.getElementById('loading');
   loading.classList.add('fade-out');
   setTimeout(() => { loading.style.display = 'none'; }, 800);
-}, 3600);
+}, 8000);
 
 // ——— NAVBAR SCROLL ———
 window.addEventListener('scroll', () => {
@@ -1243,7 +1255,7 @@ const i18n = {
     val1: 'Curiosity', val2: 'Clarity', val3: 'Empathy', val4: 'Consistency',
     proj_label: 'Selected Works', proj_sub: 'A growing collection across data, strategy, digital systems, and analytics.',
     tab_all: 'All', tab_data: 'Data & Analytics', tab_ai: 'AI Exploration', tab_product: 'Product & Strategy', tab_digital: 'Digital Systems',
-    contact_title: "Let's connect.\nor simply be friends?",
+    contact_title: "Let's <em>connect.</em><br><span class='contact-mini-title'>or simply be friends?</span>",
     contact_body: "Open for collaboration, internship opportunities, analytics inquiries, and friendly professional connections. Say hi, I don't bite.",
     form_label: 'Send a message', form_name: 'Name', form_name_ph: 'Your name', form_inst: 'Institution / Social', form_inst_ph: 'Where are you from?', form_msg: 'Short Message', form_msg_ph: "What's on your mind?",
     form_note: '✦ This form is a placeholder — reach me directly via email or LinkedIn for now.',
@@ -1262,7 +1274,7 @@ const i18n = {
     val1: 'Rasa Ingin Tahu', val2: 'Kejelasan', val3: 'Empati', val4: 'Konsistensi',
     proj_label: 'Karya Pilihan', proj_sub: 'Koleksi yang terus berkembang di data, strategi, sistem digital, dan analitik.',
     tab_all: 'Semua', tab_data: 'Data & Analitik', tab_ai: 'Eksplorasi AI', tab_product: 'Produk & Strategi', tab_digital: 'Sistem Digital',
-    contact_title: 'Mari terhubung.\natau sekadar berteman?',
+    contact_title: "Mari <em>terhubung.</em><br><span class='contact-mini-title'>atau sekadar berteman?</span>",
     contact_body: 'Terbuka untuk kolaborasi, peluang magang, pertanyaan analitik, dan koneksi profesional yang ramah.',
     form_label: 'Kirim pesan', form_name: 'Nama', form_name_ph: 'Namamu', form_inst: 'Institusi / Sosial', form_inst_ph: 'Kamu dari mana?', form_msg: 'Pesan Singkat', form_msg_ph: 'Ada yang ingin kamu sampaikan?',
     form_note: '✦ Form ini masih placeholder — hubungi saya langsung via email atau LinkedIn untuk saat ini.',
@@ -1281,7 +1293,7 @@ const i18n = {
     val1: '호기심', val2: '명확성', val3: '공감', val4: '일관성',
     proj_label: '선별 작업', proj_sub: '데이터, 전략, 디지털 시스템, 분석 분야의 성장하는 컬렉션.',
     tab_all: '전체', tab_data: '데이터 & 분석', tab_ai: 'AI 탐구', tab_product: '제품 & 전략', tab_digital: '디지털 시스템',
-    contact_title: '연결해요.\n아니면 그냥 친구가 될까요?',
+    contact_title: "연결해요.<br><span class='contact-mini-title'>아니면 그냥 친구가 될까요?</span>",
     contact_body: '협업, 인턴십 기회, 분석 문의, 그리고 친근한 전문적 연결에 열려 있습니다.',
     form_label: '메시지 보내기', form_name: '이름', form_name_ph: '당신의 이름', form_inst: '기관 / 소셜', form_inst_ph: '어디서 오셨나요?', form_msg: '짧은 메시지', form_msg_ph: '하고 싶은 말은?',
     form_note: '✦ 이 양식은 플레이스홀더입니다 — 지금은 이메일 또는 LinkedIn으로 직접 연락해 주세요.',
@@ -1300,7 +1312,7 @@ const i18n = {
     val1: 'Neugier', val2: 'Klarheit', val3: 'Empathie', val4: 'Konsequenz',
     proj_label: 'Ausgewählte Arbeiten', proj_sub: 'Eine wachsende Sammlung in Daten, Strategie, digitale Systeme und Analytik.',
     tab_all: 'Alle', tab_data: 'Daten & Analytik', tab_ai: 'KI-Erkundung', tab_product: 'Produkt & Strategie', tab_digital: 'Digitale Systeme',
-    contact_title: 'Lass uns verbinden.\noder einfach Freunde sein?',
+    contact_title: "Lass uns <em>verbinden.</em><br><span class='contact-mini-title'>oder einfach Freunde sein?</span>",
     contact_body: 'Offen für Zusammenarbeit, Praktikumsmöglichkeiten, Analytikanfragen und freundliche berufliche Verbindungen.',
     form_label: 'Nachricht senden', form_name: 'Name', form_name_ph: 'Dein Name', form_inst: 'Institution / Sozial', form_inst_ph: 'Woher kommst du?', form_msg: 'Kurze Nachricht', form_msg_ph: 'Was möchtest du sagen?',
     form_note: '✦ Dieses Formular ist ein Platzhalter — kontaktiere mich direkt per E-Mail oder LinkedIn.',
