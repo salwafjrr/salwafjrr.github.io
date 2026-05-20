@@ -93,15 +93,24 @@
   }
 
   .loading-greeting {
-    font-family: 'Playfair Display', serif;
-    font-size: clamp(3rem, 9vw, 5.8rem);
-    color: var(--cocoa);
-    font-weight: 600;
-    letter-spacing: -0.02em;
-    min-height: 1.25em;
-    text-align: center;
-    animation: greetFade 1.2s ease;
-  }
+  font-family: 'Playfair Display', 'Noto Sans', 'Noto Sans JP', 'Noto Sans KR', 'Noto Sans Arabic', 'Noto Sans Devanagari', serif;
+  font-size: clamp(3rem, 9vw, 5.8rem);
+  color: var(--cocoa);
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  width: min(92vw, 820px);
+  height: 1.35em;
+  line-height: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  overflow: hidden;
+  white-space: nowrap;
+  transform: translateZ(0);
+  will-change: opacity, filter;
+  animation: greetFade 0.65s ease;
+}
 
   .loading-name {
     font-family: 'Plus Jakarta Sans', sans-serif;
@@ -818,7 +827,7 @@
   @keyframes blobPulse { 0%, 100% { transform: scale(1); opacity: 0.8; } 50% { transform: scale(1.1); opacity: 1; } }
   @keyframes fadeUp { from { opacity: 0; transform: translateY(24px); } to { opacity: 1; transform: translateY(0); } }
   @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
-  @keyframes greetFade { 0% { opacity: 0; transform: translateY(10px); } 100% { opacity: 1; transform: translateY(0); } }
+  @keyframes greetFade {0% { opacity: 0; filter: blur(4px); } 100% { opacity: 1; filter: blur(0); }}
   @keyframes loadBar { from { width: 0; } to { width: 100%; } }
   @keyframes sparklePop { 0% { opacity: 0; transform: scale(0) rotate(0deg); } 50% { opacity: 1; transform: scale(1.4) rotate(180deg); } 100% { opacity: 0; transform: scale(0.8) rotate(360deg); } }
   @keyframes sparkleFloat { 0%, 100% { transform: translateY(0) scale(1); opacity: 0.6; } 50% { transform: translateY(-8px) scale(1.2); opacity: 1; } }
