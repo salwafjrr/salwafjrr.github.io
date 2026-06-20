@@ -453,23 +453,22 @@
 
   .about-photo-placeholder {
     width: 100%; height: 100%;
-    display: flex; align-items: center; justify-content: center;
-    flex-direction: column; gap: 12px;
+    padding: 24px; display: flex; flex-direction: column; justify-content: center;
     background: linear-gradient(135deg, var(--blush) 0%, rgba(196,155,175,0.3) 100%);
   }
 
   .about-photo-placeholder img {
-    width: 120px;
-    image-rendering: pixelated;
+    width: 100%; max-width: 420px; height: 520px; object-fit: cover; border-radius: 20px;
     animation: float 3s ease-in-out infinite;
-    filter: drop-shadow(0 8px 20px rgba(196,155,175,0.4));
+    filter: drop-shadow(0 12px 30px rgba(196,155,175,0.35));
   }
 
   .about-photo-placeholder p {
+    margin-top: 14px;
     font-family: 'Cormorant Garamond', serif;
     font-style: italic;
     color: var(--rose);
-    font-size: 0.9rem;
+    text-align: center; font-size: 1rem;
   }
 
   .about-right { display: flex; flex-direction: column; gap: 28px; }
@@ -970,7 +969,7 @@
         <div class="about-card">
           <p class="about-card-label" data-i18n="card_focus">Current Focus</p>
           <ul>
-            <li data-i18n="focus1">Machine Learning Foundations</li>
+            <li data-i18n="focus1">Machine Learning</li>
             <li data-i18n="focus2">SQL Optimization</li>
             <li data-i18n="focus3">Business Intelligence</li>
             <li data-i18n="focus4">Product Analytics</li>
@@ -986,42 +985,6 @@
           </ul>
         </div>
       </div>
-    </div>
-  </div>
-</section>
-
-<section id="highlights">
-  <p class="section-label reveal">Highlights</p>
-  <div class="about-cards reveal">
-    <div class="about-card">
-      <p class="about-card-label">Projects</p>
-      <ul>
-        <li>4+ Analytics & Technology Projects</li>
-      </ul>
-    </div>
-
-    <div class="about-card">
-      <p class="about-card-label">Focus Area</p>
-      <ul>
-        <li>Data Analytics</li>
-        <li>AI & Machine Learning</li>
-      </ul>
-    </div>
-
-    <div class="about-card">
-      <p class="about-card-label">Interests</p>
-      <ul>
-        <li>Business Intelligence</li>
-        <li>Digital Products</li>
-      </ul>
-    </div>
-
-    <div class="about-card">
-      <p class="about-card-label">Availability</p>
-      <ul>
-        <li>Work & Research</li>
-        <li>Collaborations</li>
-      </ul>
     </div>
   </div>
 </section>
@@ -1266,7 +1229,7 @@ const i18n = {
     about_intro: "I'm Salwa Fajariah, a Computer Science student focused on data analytics, AI, and business problem-solving through technology.",
     about_body: "My interest in technology started with a simple question: how can data help people make better decisions? Since then, I have explored projects involving analytics, machine learning, information systems, and product strategy. I enjoy connecting technical skills with business thinking, transforming data into insights and ideas into practical solutions. Currently, I am building expertise in data analytics, machine learning, and digital product development while actively seeking opportunities to contribute through internships, research, and collaborative projects.",
     card_focus: 'Current Focus', card_values: 'Values',
-    focus1: 'Machine Learning Foundations', focus2: 'SQL Optimization', focus3: 'Business Intelligence', focus4: 'Product Analytics',
+    focus1: 'Machine Learning', focus2: 'SQL Optimization', focus3: 'Business Intelligence', focus4: 'Product Analytics',
     val1: 'Curiosity', val2: 'Clarity', val3: 'Ownership', val4: 'Consistency',
     proj_label: 'Selected Works', proj_sub: 'A growing collection across data, strategy, digital systems, and analytics.',
     contact_title: "Let's <em>connect.</em><br><span class='contact-mini-title'>or simply be friends?</span>",
@@ -1283,7 +1246,7 @@ const i18n = {
     about_intro: "Saya Salwa Fajariah, mahasiswi Ilmu Komputer yang berfokus pada data analytics, AI, dan pemecahan masalah bisnis melalui teknologi.",
     about_body: "Ketertarikan saya pada teknologi berawal dari satu pertanyaan sederhana: bagaimana data dapat membantu manusia mengambil keputusan yang lebih baik? Sejak saat itu, saya mengeksplorasi berbagai proyek di bidang analitik, machine learning, sistem informasi, dan strategi produk. Saya menikmati proses menghubungkan kemampuan teknis dengan pemikiran bisnis, mengubah data menjadi insight dan ide menjadi solusi yang dapat diterapkan. Saat ini saya sedang memperdalam keahlian dalam data analytics, machine learning, dan pengembangan produk digital sambil aktif mencari kesempatan untuk berkontribusi melalui magang, riset, dan proyek kolaboratif.",
     card_focus: 'Fokus Sekarang', card_values: 'Nilai',
-    focus1: 'Fondasi Machine Learning', focus2: 'Optimasi SQL', focus3: 'Intelijen Bisnis', focus4: 'Analitik Produk',
+    focus1: 'Machine Learning', focus2: 'Optimasi SQL', focus3: 'Intelijen Bisnis', focus4: 'Analitik Produk',
     val1: 'Rasa Ingin Tahu', val2: 'Kejelasan', val3: 'Tanggung Jawab Penuh', val4: 'Konsistensi',
     proj_label: 'Karya Pilihan', proj_sub: 'Koleksi yang terus berkembang di data, strategi, sistem digital, dan analitik.',
     contact_title: "Mari <em>terhubung.</em><br><span class='contact-mini-title'>atau sekadar berteman?</span>",
@@ -1319,7 +1282,7 @@ const i18n = {
     about_intro: "Ich bin Salwa Fajariah, eine Informatikstudentin mit Schwerpunkt auf Datenanalyse, KI und der Lösung geschäftlicher Herausforderungen durch Technologie.",
     about_body: "Mein Interesse an Technologie begann mit einer einfachen Frage: Wie können Daten Menschen dabei helfen, bessere Entscheidungen zu treffen? Seitdem habe ich Projekte in den Bereichen Datenanalyse, Machine Learning, Informationssysteme und Produktstrategie durchgeführt. Es macht mir Freude, technisches Wissen mit betriebswirtschaftlichem Denken zu verbinden und Daten in Erkenntnisse sowie Ideen in praktische Lösungen umzuwandeln. Derzeit vertiefe ich meine Kenntnisse in Datenanalyse, Machine Learning und digitaler Produktentwicklung und suche aktiv nach Möglichkeiten, durch Praktika, Forschung und gemeinsame Projekte einen Beitrag zu leisten.",
     card_focus: 'Aktueller Fokus', card_values: 'Werte',
-    focus1: 'Machine-Learning-Grundlagen', focus2: 'SQL-Optimierung', focus3: 'Business Intelligence', focus4: 'Produktanalytik',
+    focus1: 'Machine-Learning', focus2: 'SQL-Optimierung', focus3: 'Business Intelligence', focus4: 'Produktanalytik',
     val1: 'Neugier', val2: 'Klarheit', val3: 'Eigenverantwortung', val4: 'Konsequenz',
     proj_label: 'Ausgewählte Arbeiten', proj_sub: 'Eine wachsende Sammlung in Daten, Strategie, digitale Systeme und Analytik.',
     contact_title: "Lass uns <em>verbinden.</em><br><span class='contact-mini-title'>oder einfach Freunde sein?</span>",
