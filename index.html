@@ -661,6 +661,46 @@
     border-radius: 22px;
   }
 
+  /* Embedded PDF previews for portfolio work */
+  .work-visual.pdf-visual {
+    min-height: 360px;
+    padding: 16px;
+    align-items: stretch;
+    background: linear-gradient(135deg, rgba(252,231,239,.72), rgba(196,155,175,.18));
+  }
+  .pdf-frame {
+    display: block;
+    width: 100%;
+    height: 430px;
+    border: 0;
+    border-radius: 14px;
+    background: #fff;
+    box-shadow: 0 14px 34px rgba(70,56,64,.12);
+  }
+  .pdf-caption {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
+    margin-top: 10px;
+    padding: 0 3px;
+    color: var(--muted);
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-size: .68rem;
+    letter-spacing: .04em;
+  }
+  .pdf-caption a {
+    color: var(--rose-dark);
+    text-decoration: none;
+    white-space: nowrap;
+  }
+  .pdf-caption a:hover { color: var(--cocoa); text-decoration: underline; }
+  @media (max-width: 768px) {
+    .work-visual.pdf-visual { min-height: 280px; padding: 10px; }
+    .pdf-frame { height: 340px; }
+    .pdf-caption { font-size: .62rem; }
+  }
+
   .scroll-work {
     opacity: 0;
     transform: translateY(90px) scale(0.97);
@@ -671,6 +711,85 @@
 
   .work-card:nth-child(even) .work-copy { order: 2; }
   .work-card:nth-child(even) .work-visual { order: 1; }
+
+
+  /* SELECTED WORKS — CATEGORY GROUPS & PROJECT CONTEXT TOGGLES */
+  .work-group { max-width: 1100px; margin: 0 auto 58px; }
+  .work-group:last-child { margin-bottom: 0; }
+  .work-group-heading {
+    display: flex; align-items: center; gap: 14px;
+    margin: 0 0 22px; color: var(--cocoa);
+  }
+  .work-group-heading span {
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-size: .7rem; letter-spacing: .18em; text-transform: uppercase;
+    color: var(--rose); white-space: nowrap;
+  }
+  .work-group-heading::after {
+    content: ''; height: 1px; flex: 1;
+    background: rgba(196,155,175,.28);
+  }
+  .work-group .vertical-projects { gap: 26px; }
+  .work-card { min-height: 0; }
+  .work-copy h3 { font-size: clamp(1.65rem, 2.8vw, 2.45rem); }
+  .work-actions {
+    display: flex; align-items: center; flex-wrap: wrap; gap: 16px;
+    margin-top: 22px;
+  }
+  .work-link {
+    display: inline-flex; align-items: center; gap: 7px;
+    text-decoration: none; cursor: pointer;
+  }
+  .work-details {
+    margin-top: 20px;
+    border-top: 1px solid rgba(196,155,175,.28);
+    border-bottom: 1px solid rgba(196,155,175,.18);
+    padding: 13px 0;
+  }
+  .work-details summary {
+    list-style: none; cursor: pointer;
+    display: flex; align-items: center; justify-content: space-between; gap: 12px;
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-size: .75rem; letter-spacing: .08em;
+    color: var(--rose-dark); font-weight: 600;
+  }
+  .work-details summary::-webkit-details-marker { display: none; }
+  .work-details summary::after {
+    content: '+'; font-size: 1.2rem; line-height: 1;
+    transition: transform .2s ease;
+  }
+  .work-details[open] summary::after { content: '−'; }
+  .work-context {
+    padding: 14px 0 3px;
+    color: var(--muted); font-size: .86rem; line-height: 1.8;
+  }
+  .work-context p + p { margin-top: 9px; }
+  .work-file {
+    display: inline-block; margin-top: 12px;
+    color: var(--cocoa); font-size: .78rem; line-height: 1.6;
+    overflow-wrap: anywhere;
+  }
+  .dcn-logo-pair {
+    display: flex; align-items: center; justify-content: center;
+    gap: 18px; width: 100%; padding: 28px;
+  }
+  .dcn-logo-pair img {
+    width: min(38%, 150px); aspect-ratio: 1; object-fit: contain;
+    filter: drop-shadow(0 8px 18px rgba(70,56,64,.08));
+  }
+  .coming-soon {
+    display: inline-flex; align-items: center; gap: 7px;
+    padding: 7px 12px; border-radius: 30px;
+    background: rgba(196,155,175,.13); color: var(--rose-dark);
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-size: .68rem; letter-spacing: .08em; text-transform: uppercase;
+  }
+  @media (max-width: 768px) {
+    .work-group { margin-bottom: 42px; }
+    .work-group-heading { margin-bottom: 16px; }
+    .dcn-logo-pair { gap: 12px; padding: 18px; }
+    .dcn-logo-pair img { width: 39%; }
+  }
 
   /* CONTACT */
   #contact { background: white; position: relative; overflow: hidden; }
@@ -994,73 +1113,240 @@
   <div class="projects-header reveal">
     <p class="section-label" data-i18n="proj_label">Selected Works</p>
     <h2 class="section-title">Things I've <em>built</em> & explored</h2>
-    <p class="projects-sub" data-i18n="proj_sub">A growing collection across data, strategy, digital systems, and analytics.</p>
+    <p class="projects-sub" data-i18n="proj_sub">A selected collection across marketing analytics, business strategy, and digital systems.</p>
   </div>
 
-  <div class="vertical-projects">
-    <article class="work-card scroll-work">
-      <div class="work-copy">
-        <span class="work-number">01</span>
-        <p class="work-category">Data & Analytics</p>
-        <h3>Supermarket Sales Analysis</h3>
-        <p>Excel-based analysis exploring sales trends, customer segments, and business insights from retail transaction data.</p>
-        <div class="work-tools">
-          <span>Excel</span><span>Pivot Table</span><span>Dashboard</span>
+  <!-- MARKETING ANALYTICS -->
+  <div class="work-group">
+    <h3 class="work-group-heading"><span>Marketing Analytics</span></h3>
+    <div class="vertical-projects">
+      <article class="work-card scroll-work">
+        <div class="work-copy">
+          <span class="work-number">01</span>
+          <p class="work-category">Marketing Analytics · Social Media Reporting</p>
+          <h3>UNIQLO Indonesia — Social Media Monthly Report</h3>
+          <p>A monthly performance review of UNIQLO Indonesia's social media channels, translating platform metrics into a clearer view of brand visibility and audience response.</p>
+          <div class="work-tools">
+            <span>Social Media Analytics</span><span>Monthly Reporting</span><span>Performance Analysis</span>
+          </div>
+          <div class="work-actions">
+            <a href="files/Social%20Media%20Monthly%20Report%20UNIQLO%20-%20July%202026.pdf"
+               class="work-link" target="_blank" rel="noopener">Open PDF ↗</a>
+          </div>
+          <details class="work-details">
+            <summary>Project context & contribution</summary>
+            <div class="work-context">
+              <p>The work focuses on reviewing reach, impressions, engagement rate, and interactions to understand how the brand's social media performance developed during the reporting period. These metrics help assess both content visibility and the audience's response across platforms.</p>
+              <p>The report brings the platform results into a structured monthly view, making it easier to identify performance patterns and areas that may need further attention.</p>
+              <p><strong>Deliverable:</strong> UNIQLO Social Media Monthly Report — July 2026.</p>
+              <a class="work-file" href="files/Social%20Media%20Monthly%20Report%20UNIQLO%20-%20July%202026.pdf" target="_blank" rel="noopener">File: Social Media Monthly Report UNIQLO - July 2026.pdf ↗</a>
+            </div>
+          </details>
         </div>
-        <a href="#" class="work-link">View Project →</a>
-      </div>
-      <div class="work-visual">
-        <div class="work-image-placeholder">📊</div>
-      </div>
-    </article>
+        <div class="work-visual pdf-visual">
+          <div style="width:100%; min-width:0;">
+            <iframe class="pdf-frame" src="files/Social%20Media%20Monthly%20Report%20UNIQLO%20-%20July%202026.pdf#toolbar=0&navpanes=0&view=FitH" title="UNIQLO Social Media Monthly Report — July 2026" loading="lazy"></iframe>
+            <div class="pdf-caption"><span>UNIQLO Social Media Monthly Report — July 2026</span><a href="files/Social%20Media%20Monthly%20Report%20UNIQLO%20-%20July%202026.pdf" target="_blank" rel="noopener">Open in new tab ↗</a></div>
+          </div>
+        </div>
+      </article>
 
-    <article class="work-card scroll-work">
-      <div class="work-copy">
-        <span class="work-number">02</span>
-        <p class="work-category">Product & Strategy</p>
-        <h3>KantorKu PRD Case Study</h3>
-        <p>Product requirement document built for an internship take-home case, covering user needs, product direction, and success metrics.</p>
-        <div class="work-tools">
-          <span>PRD</span><span>Product Strategy</span><span>UX Thinking</span>
+      <article class="work-card scroll-work">
+        <div class="work-copy">
+          <span class="work-number">02</span>
+          <p class="work-category">Marketing Analytics · Weekly Reporting</p>
+          <h3>XL HOME — Weekly Social Media Report</h3>
+          <p>A recurring weekly report that tracks XL HOME's digital performance alongside the conversations taking place around the brand, helping connect channel activity with audience response.</p>
+          <div class="work-tools">
+            <span>Social Listening</span><span>Social Media Analytics</span><span>Weekly Reporting</span>
+          </div>
+          <div class="work-actions">
+            <a href="files/%5BXL%20HOME%5D%20Weekly%20Report%20-%20W2%20Nov%202026.pdf"
+               class="work-link" target="_blank" rel="noopener">Open PDF ↗</a>
+          </div>
+          <details class="work-details">
+            <summary>Project context & contribution</summary>
+            <div class="work-context">
+              <p>The report monitors social media performance and online conversation developments on a weekly basis. The analysis brings together channel metrics, content performance, conversation volume, sentiment, and recurring discussion topics to provide a more rounded picture of the brand's digital presence.</p>
+              <p>This weekly view supports ongoing evaluation: what is gaining audience attention, how people are responding, and which customer or service-related topics are shaping the conversation.</p>
+              <p><strong>Deliverable:</strong> XL HOME Weekly Report — Week 2, November 2026.</p>
+              <a class="work-file" href="files/%5BXL%20HOME%5D%20Weekly%20Report%20-%20W2%20Nov%202026.pdf" target="_blank" rel="noopener">File: [XL HOME] Weekly Report - W2 Nov 2026.pdf ↗</a>
+            </div>
+          </details>
         </div>
-        <a href="#" class="work-link">View Project →</a>
-      </div>
-      <div class="work-visual">
-        <div class="work-image-placeholder">📋</div>
-      </div>
-    </article>
+        <div class="work-visual pdf-visual">
+          <div style="width:100%; min-width:0;">
+            <iframe class="pdf-frame" src="files/%5BXL%20HOME%5D%20Weekly%20Report%20-%20W2%20Nov%202026.pdf#toolbar=0&navpanes=0&view=FitH" title="XL HOME Weekly Report — W2 November 2026" loading="lazy"></iframe>
+            <div class="pdf-caption"><span>XL HOME Weekly Report — W2 November 2026</span><a href="files/%5BXL%20HOME%5D%20Weekly%20Report%20-%20W2%20Nov%202026.pdf" target="_blank" rel="noopener">Open in new tab ↗</a></div>
+          </div>
+        </div>
+      </article>
+    </div>
+  </div>
 
-    <article class="work-card scroll-work">
-      <div class="work-copy">
-        <span class="work-number">03</span>
-        <p class="work-category">Digital Systems</p>
-        <h3>UMKM Sales Information System</h3>
-        <p>A web-based sales information system for small business operations, built with database, transaction, and reporting features.</p>
-        <div class="work-tools">
-          <span>PHP</span><span>MySQL</span><span>AJAX</span>
+  <!-- BUSINESS -->
+  <div class="work-group">
+    <h3 class="work-group-heading"><span>Business & Strategy</span></h3>
+    <div class="vertical-projects">
+      <article class="work-card scroll-work">
+        <div class="work-copy">
+          <span class="work-number">03</span>
+          <p class="work-category">Business Operations · Partnership</p>
+          <h3>PT Sewa HT Indonesia — Six-Branch Business</h3>
+          <p>A business analysis project based on PT Sewa HT Indonesia, a handy-talky rental business operating across six branches, with attention to how its multi-branch operations can be understood and evaluated.</p>
+          <div class="work-tools">
+            <span>Business Analysis</span><span>Operations</span><span>Multi-Branch Context</span>
+          </div>
+          <div class="work-actions">
+            <a href="files/PT%20Sewa%20HT%20Indonesia%20%286%20Branch%29.pdf"
+               class="work-link" target="_blank" rel="noopener">Open PDF ↗</a>
+          </div>
+          <details class="work-details">
+            <summary>Project context & contribution</summary>
+            <div class="work-context">
+              <p>The business context is a handy-talky rental service with six operating branches. This creates a multi-location business setting where branch-level performance and operational conditions are important parts of understanding the overall business.</p>
+              <p>The project document presents the business analysis and branch context. The PDF preview is provided as the main work sample; its contents should be used for the specific findings and recommendations.</p>
+              <p><strong>Deliverable:</strong> PT Sewa HT Indonesia — Business Performance & Branch Optimization Dashboard (6 Branch).</p>
+              <a class="work-file" href="files/PT%20Sewa%20HT%20Indonesia%20%286%20Branch%29.pdf" target="_blank" rel="noopener">File: PT Sewa HT Indonesia (6 Branch).pdf ↗</a>
+            </div>
+          </details>
         </div>
-        <a href="#" class="work-link">View Project →</a>
-      </div>
-      <div class="work-visual">
-        <div class="work-image-placeholder">💻</div>
-      </div>
-    </article>
+        <div class="work-visual pdf-visual">
+          <div style="width:100%; min-width:0;">
+            <iframe class="pdf-frame" src="files/PT%20Sewa%20HT%20Indonesia%20%286%20Branch%29.pdf#toolbar=0&navpanes=0&view=FitH" title="PT Sewa HT Indonesia — 6 Branches" loading="lazy"></iframe>
+            <div class="pdf-caption"><span>PT Sewa HT Indonesia — 6 Branches</span><a href="files/PT%20Sewa%20HT%20Indonesia%20%286%20Branch%29.pdf" target="_blank" rel="noopener">Open in new tab ↗</a></div>
+          </div>
+        </div>
+      </article>
 
-    <article class="work-card scroll-work">
-      <div class="work-copy">
-        <span class="work-number">04</span>
-        <p class="work-category">AI Exploration</p>
-        <h3>NLP Sentiment Classifier</h3>
-        <p>A machine learning exploration project using text classification to understand sentiment patterns from written data.</p>
-        <div class="work-tools">
-          <span>Python</span><span>NLP</span><span>Machine Learning</span>
+      <article class="work-card scroll-work">
+        <div class="work-copy">
+          <span class="work-number">04</span>
+          <p class="work-category">Location Intelligence · Market Analysis</p>
+          <h3>Sinarmas Land — Potential Tourism Location Analysis</h3>
+          <p>A location analysis project for Sinarmas Land that explores places with the potential to be developed into tourism destinations or visitor-oriented areas.</p>
+          <div class="work-tools">
+            <span>Data Analysis</span><span>Location Analysis</span><span>Opportunity Assessment</span>
+          </div>
+          <div class="work-actions">
+            <a href="files/SML%20Project%20-%20Salwa%20Fajariah%20%28DA%20Intern%29.pdf"
+               class="work-link" target="_blank" rel="noopener">Open PDF ↗</a>
+          </div>
+          <details class="work-details">
+            <summary>Project context & contribution</summary>
+            <div class="work-context">
+              <p>The analysis looks at location potential through the lens of possible tourism or destination development. Rather than treating a place only as a point on a map, the project considers its opportunity to become an area that can attract visitors and support a broader destination concept.</p>
+              <p>The attached project document contains the specific locations, assessment approach, supporting analysis, and conclusions used in the study.</p>
+              <p><strong>Deliverable:</strong> Sinarmas Land — Potential Tourism Location Analysis.</p>
+              <a class="work-file" href="files/SML%20Project%20-%20Salwa%20Fajariah%20%28DA%20Intern%29.pdf" target="_blank" rel="noopener">File: SML Project - Salwa Fajariah (DA Intern).pdf ↗</a>
+            </div>
+          </details>
         </div>
-        <a href="#" class="work-link">View Project →</a>
-      </div>
-      <div class="work-visual">
-        <div class="work-image-placeholder">🤖</div>
-      </div>
-    </article>
+        <div class="work-visual pdf-visual">
+          <div style="width:100%; min-width:0;">
+            <iframe class="pdf-frame" src="files/SML%20Project%20-%20Salwa%20Fajariah%20%28DA%20Intern%29.pdf#toolbar=0&navpanes=0&view=FitH" title="Sinarmas Land — Tourism Location Analysis" loading="lazy"></iframe>
+            <div class="pdf-caption"><span>Sinarmas Land — Tourism Location Analysis</span><a href="files/SML%20Project%20-%20Salwa%20Fajariah%20%28DA%20Intern%29.pdf" target="_blank" rel="noopener">Open in new tab ↗</a></div>
+          </div>
+        </div>
+      </article>
+
+      <article class="work-card scroll-work">
+        <div class="work-copy">
+          <span class="work-number">05</span>
+          <p class="work-category">Business Case Competition · Product Strategy</p>
+          <h3>Telkomsel Ventures — Business Case Competition</h3>
+          <p>A business case competition project that connects problem analysis with digital product thinking, customer perspectives, and business recommendations for Telkomsel Ventures.</p>
+          <div class="work-tools">
+            <span>Business Case</span><span>Strategic Analysis</span><span>Recommendation</span>
+          </div>
+          <div class="work-actions">
+            <a href="files/Telkomsel%20Ventures%20Business%20Case%20Competition.pdf"
+               class="work-link" target="_blank" rel="noopener">Open PDF ↗</a>
+          </div>
+          <details class="work-details">
+            <summary>Project context & contribution</summary>
+            <div class="work-context">
+              <p>The case is structured around understanding the core problem before moving into potential solutions. It brings together the business challenge, the role of digital products, customer needs and perspectives, and the implications these factors have for the proposed direction.</p>
+              <p>The recommendation is intended to connect product and customer considerations with a viable business perspective, rather than treating them as separate discussions.</p>
+              <p><strong>Deliverable:</strong> Telkomsel Ventures Business Case Competition document.</p>
+              <a class="work-file" href="files/Telkomsel%20Ventures%20Business%20Case%20Competition.pdf" target="_blank" rel="noopener">File: Telkomsel Ventures Business Case Competition.pdf ↗</a>
+            </div>
+          </details>
+        </div>
+        <div class="work-visual pdf-visual">
+          <div style="width:100%; min-width:0;">
+            <iframe class="pdf-frame" src="files/Telkomsel%20Ventures%20Business%20Case%20Competition.pdf#toolbar=0&navpanes=0&view=FitH" title="Telkomsel Ventures — Business Case" loading="lazy"></iframe>
+            <div class="pdf-caption"><span>Telkomsel Ventures — Business Case</span><a href="files/Telkomsel%20Ventures%20Business%20Case%20Competition.pdf" target="_blank" rel="noopener">Open in new tab ↗</a></div>
+          </div>
+        </div>
+      </article>
+    </div>
+  </div>
+
+  <!-- DIGITAL SYSTEMS -->
+  <div class="work-group">
+    <h3 class="work-group-heading"><span>Digital Systems</span></h3>
+    <div class="vertical-projects">
+      <article class="work-card scroll-work">
+        <div class="work-copy">
+          <span class="work-number">06</span>
+          <p class="work-category">Digital System · Academic Project</p>
+          <h3>LMS UNINDRA — Task Dashboard & Reminder</h3>
+          <p>An academic task-management dashboard concept for UNINDRA students, designed to make assignments easier to organize, deadlines easier to track, and reminders easier to follow.</p>
+          <div class="work-tools">
+            <span>Information System</span><span>Dashboard</span><span>Task Management</span>
+          </div>
+          <div class="work-actions">
+            <a href="files/LMS%20UNINDRA%20Task%20Dashboard%20%26%20Reminder.pdf"
+               class="work-link" target="_blank" rel="noopener">Open PDF ↗</a>
+          </div>
+          <details class="work-details">
+            <summary>Project context & contribution</summary>
+            <div class="work-context">
+              <p>The system is intended to help students keep their academic responsibilities visible in one place. A dashboard provides an overview of tasks, while deadline tracking helps students understand what needs attention and when.</p>
+              <p>Reminder functionality supports timely follow-up so assignments are less likely to be overlooked. The attached document contains the project's detailed flow, feature scope, and design.</p>
+              <p><strong>Deliverable:</strong> LMS UNINDRA — Task Dashboard & Reminder.</p>
+              <a class="work-file" href="files/LMS%20UNINDRA%20Task%20Dashboard%20%26%20Reminder.pdf" target="_blank" rel="noopener">File: LMS UNINDRA Task Dashboard & Reminder.pdf ↗</a>
+            </div>
+          </details>
+        </div>
+        <div class="work-visual pdf-visual">
+          <div style="width:100%; min-width:0;">
+            <iframe class="pdf-frame" src="files/LMS%20UNINDRA%20Task%20Dashboard%20%26%20Reminder.pdf#toolbar=0&navpanes=0&view=FitH" title="LMS UNINDRA — Task Dashboard & Reminder" loading="lazy"></iframe>
+            <div class="pdf-caption"><span>LMS UNINDRA — Task Dashboard & Reminder</span><a href="files/LMS%20UNINDRA%20Task%20Dashboard%20%26%20Reminder.pdf" target="_blank" rel="noopener">Open in new tab ↗</a></div>
+          </div>
+        </div>
+      </article>
+
+      <article class="work-card scroll-work">
+        <div class="work-copy">
+          <span class="work-number">07</span>
+          <p class="work-category">Community Platform · Website Development</p>
+          <h3>Dicoding Community Network UNINDRA</h3>
+          <p>An upcoming website for Dicoding Community Network (DCN) UNINDRA, envisioned as the community's central place for information, activities, programs, identity, and opportunities to get involved.</p>
+          <div class="work-tools">
+            <span>Web Development</span><span>Community Platform</span><span>In Progress</span>
+          </div>
+          <div class="work-actions">
+            <span class="coming-soon">Website in development · Unpublished</span>
+          </div>
+          <details class="work-details">
+            <summary>Project context & current status</summary>
+            <div class="work-context">
+              <p>The planned website will bring the community's key information into one accessible place, including its identity, activities, programs, updates, and ways for students to participate or join. It is intended to make the community easier to discover and give members a consistent digital reference point.</p>
+              <p><strong>Current status:</strong> Upcoming — currently in development and unpublished.</p>
+              <p><strong>Visual identity:</strong> The DCN Circle logo and DCN avatar are displayed together as the website's brand assets.</p>
+            </div>
+          </details>
+        </div>
+        <div class="work-visual">
+          <div class="dcn-logo-pair">
+            <img src="assets/LOGO%20DCN%20CIRCLE.png" alt="Dicoding Community Network UNINDRA circle logo"/>
+            <img src="assets/avatar_DCN.png" alt="Dicoding Community Network UNINDRA avatar"/>
+          </div>
+        </div>
+      </article>
+    </div>
   </div>
 </section>
 
