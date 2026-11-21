@@ -49,28 +49,40 @@
     body, a, button, input, textarea { cursor: auto !important; }
   }
 
-  /* CUSTOM CURSOR */
-  .cursor {
-    width: 10px; height: 10px;
-    background: var(--rose);
-    border-radius: 50%;
-    position: fixed; top: 0; left: 0;
-    pointer-events: none; z-index: 9999;
-    transform: translate(-50%,-50%);
-    transition: transform 0.1s ease;
-    mix-blend-mode: multiply;
-  }
+/* CUSTOM CURSOR — LOGO PINK GRADIENT */
+.cursor {
+  width: 34px;
+  height: 34px;
+  position: fixed;
+  top: 0;
+  left: 0;
+  pointer-events: none;
+  z-index: 10000;
+  transform: translate(-50%, -50%);
+  background: url("logo1.png") center / contain no-repeat;
+  filter:
+    drop-shadow(0 0 4px rgba(255, 105, 180, 0.75))
+    drop-shadow(0 0 9px rgba(219, 112, 179, 0.45));
+  transition: transform 0.12s ease;
+}
 
-  .cursor-ring {
-    width: 32px; height: 32px;
-    border: 1.5px solid var(--rose);
-    border-radius: 50%;
-    position: fixed; top: 0; left: 0;
-    pointer-events: none; z-index: 9998;
-    transform: translate(-50%,-50%);
-    transition: all 0.15s ease;
-    opacity: 0.6;
-  }
+.cursor-ring {
+  width: 48px;
+  height: 48px;
+  border: 2px solid transparent;
+  border-radius: 50%;
+  position: fixed;
+  top: 0;
+  left: 0;
+  pointer-events: none;
+  z-index: 9999;
+  transform: translate(-50%, -50%);
+  background:
+    linear-gradient(var(--ivory), var(--ivory)) padding-box,
+    linear-gradient(135deg, #ff8fc7, #f3b5d5, #d9a7f5, #ff8fc7) border-box;
+  opacity: 0.9;
+  transition: width 0.2s ease, height 0.2s ease, opacity 0.2s ease;
+}
 
   /* LOADING SCREEN */
   #loading {
@@ -1050,7 +1062,7 @@
       <p class="hero-eyebrow" data-i18n="hero_eyebrow">Computer Science Student · Data Analytics & AI</p>
       <h1 class="hero-title">I'm <em>Salwa</em><br/>Fajariah</h1>
       <p class="hero-subtitle" data-i18n="hero_sub">Turning Data Into Insights That Drive Better Decisions</p>
-      <p class="hero-body" data-i18n="hero_body">I help transform raw data into meaningful insights, explore business opportunities through analytics, and build digital solutions that solve real-world problems. My work sits at the intersection of data, technology, and strategy which starts from curiosity of how can technology feel more useful, thoughtful, and human(?).</p>
+      <p class="hero-body" data-i18n="hero_body">My work sits at the intersection of data, technology, and strategy which starts from curiosity of how can technology feel more useful, thoughtful, and... more human than your AI.</p>
       <div class="hero-ctas">
         <a href="#projects" class="btn-primary" data-i18n="hero_cta1">Explore Projects</a>
         <a href="#contact" class="btn-secondary" data-i18n="hero_cta2">Let's Connect</a>
@@ -1082,7 +1094,6 @@
     <div class="about-right">
       <p class="section-label reveal">About</p>
       <h2 class="section-title reveal">Building at the <em>intersection</em> of Data, Technology & Business</h2>
-      <p class="about-intro reveal" data-i18n="about_intro">I'm Salwa Fajariah, a Computer Science student focused on data analytics, AI, and business problem-solving through technology.</p>
       <p class="about-body reveal" data-i18n="about_body">My interest in technology started with a simple question: how can data help people make better decisions? Since then, I have explored projects involving analytics, machine learning, information systems, and product strategy. I enjoy connecting technical skills with business thinking, transforming data into insights and ideas into practical solutions. Currently, I am building expertise in data analytics, machine learning, and digital product development while actively seeking opportunities to contribute through internships, research, and collaborative projects.</p>
       <div class="about-cards reveal">
         <div class="about-card">
@@ -1329,7 +1340,7 @@
           </div>
           <div class="work-actions">
             <a href="https://www.linkedin.com/company/dcn-unindra/"
-               class="work-link" target="_blank" rel="noopener">Check Our Linkedin ↗</a>
+               class="work-link" target="_blank" rel="noopener">Visit Our Linkedin ↗</a>
           </div>
           <details class="work-details">
             <summary>Project context & current status</summary>
@@ -1530,10 +1541,9 @@ const i18n = {
   id: {nav_about: 'Tentang', nav_work: 'Karya', nav_contact: 'Kontak',
     hero_eyebrow: 'Mahasiswi Ilmu Komputer · Data Analytics & AI',
     hero_sub: 'Mengubah Data Menjadi Insight untuk Pengambilan Keputusan yang Lebih Baik',
-    hero_body: 'Saya membantu mengubah data mentah menjadi insight yang bermakna, mengeksplorasi peluang bisnis melalui analitik, dan membangun solusi digital untuk menyelesaikan masalah nyata. Pekerjaan saya berada di persimpangan data, teknologi, dan strategi, yang berawal dari pertanyaan sederhana: bagaimana teknologi bisa menjadi lebih berguna, penuh pertimbangan, dan manusiawi?',
+    hero_body: 'Pekerjaan aku berada di persimpangan data, teknologi, dan strategi, yang berawal dari pertanyaan sederhana: bagaimana teknologi bisa menjadi lebih berguna, penuh pertimbangan, dan manusiawi?',
     hero_cta1: 'Lihat Proyek', hero_cta2: 'Mari Berkoneksi',
-    about_intro: "Saya Salwa Fajariah, mahasiswi Ilmu Komputer yang berfokus pada data analytics, AI, dan pemecahan masalah bisnis melalui teknologi.",
-    about_body: "Ketertarikan saya pada teknologi berawal dari satu pertanyaan sederhana: bagaimana data dapat membantu manusia mengambil keputusan yang lebih baik? Sejak saat itu, saya mengeksplorasi berbagai proyek di bidang analitik, machine learning, sistem informasi, dan strategi produk. Saya menikmati proses menghubungkan kemampuan teknis dengan pemikiran bisnis, mengubah data menjadi insight dan ide menjadi solusi yang dapat diterapkan. Saat ini saya sedang memperdalam keahlian dalam data analytics, machine learning, dan pengembangan produk digital sambil aktif mencari kesempatan untuk berkontribusi melalui magang, riset, dan proyek kolaboratif.",
+    about_body: "Ketertarikan aku pada teknologi berawal dari satu pertanyaan sederhana: bagaimana data dapat membantu manusia mengambil keputusan yang lebih baik? Sejak saat itu, aku mengeksplorasi berbagai proyek di bidang analitik, machine learning, sistem informasi, dan strategi produk. aku menikmati proses menghubungkan kemampuan teknis dengan pemikiran bisnis, mengubah data menjadi insight dan ide menjadi solusi yang dapat diterapkan. Saat ini aku sedang memperdalam keahlian dalam data analytics, machine learning, dan pengembangan produk digital sambil aktif mencari kesempatan untuk berkontribusi melalui magang, riset, dan proyek kolaboratif.",
     card_focus: 'Fokus Sekarang', card_values: 'Nilai',
     focus1: 'Machine Learning', focus2: 'Optimasi SQL', focus3: 'Intelijen Bisnis', focus4: 'Analitik Produk',
     val1: 'Rasa Ingin Tahu', val2: 'Kejelasan', val3: 'Tanggung Jawab Penuh', val4: 'Konsistensi',
@@ -1541,16 +1551,15 @@ const i18n = {
     contact_title: "Mari <em>terhubung.</em><br><span class='contact-mini-title'>atau sekadar berteman?</span>",
     contact_body: 'Terbuka untuk kolaborasi, peluang magang, pertanyaan analitik, dan koneksi profesional yang ramah.',
     form_label: 'Kirim pesan', form_name: 'Nama', form_name_ph: 'Namamu', form_inst: 'Institusi / Sosial', form_inst_ph: 'Kamu dari mana?', form_msg: 'Pesan Singkat', form_msg_ph: 'Ada yang ingin kamu sampaikan?',
-    form_note: '✦ Form ini masih placeholder — hubungi saya langsung via email atau LinkedIn untuk saat ini.',
+    form_note: '✦ Form ini masih placeholder — hubungi aku langsung via email atau LinkedIn untuk saat ini.',
     form_btn: 'Kirim Pesan ✦',
 },
        
   ko: {nav_about: '소개', nav_work: '작업', nav_contact: '연락',
     hero_eyebrow: '컴퓨터공학과 학생 · 데이터 분석 및 AI',
     hero_sub: '데이터를 더 나은 의사결정을 위한 인사이트로 전환',
-    hero_body: '저는 원시 데이터를 의미 있는 인사이트로 전환하고, 분석을 통해 비즈니스 기회를 탐색하며, 실제 문제를 해결하는 디지털 솔루션을 구축합니다. 저의 작업은 데이터, 기술, 전략의 교차점에 있으며, 기술이 어떻게 더 유용하고 인간 중심적일 수 있는가에 대한 호기심에서 시작됩니다.',
+    hero_body: '저의 작업은 데이터, 기술, 전략의 교차점에 있으며, 기술이 어떻게 더 유용하고 인간 중심적일 수 있는가에 대한 호기심에서 시작됩니다.',
     hero_cta1: '프로젝트 보기', hero_cta2: '연결하기',
-    about_intro: "저는 살와 파자리아입니다. 데이터 분석, AI, 그리고 기술을 활용한 비즈니스 문제 해결에 집중하고 있는 컴퓨터공학과 학생입니다.",
     about_body: "기술에 대한 저의 관심은 한 가지 단순한 질문에서 시작되었습니다. 데이터는 어떻게 더 나은 의사결정을 도울 수 있을까? 그 이후로 저는 데이터 분석, 머신러닝, 정보 시스템, 그리고 제품 전략과 관련된 다양한 프로젝트를 탐구해 왔습니다. 저는 기술적 역량과 비즈니스 사고를 연결하여 데이터를 인사이트로, 아이디어를 실질적인 솔루션으로 바꾸는 과정을 즐깁니다. 현재는 데이터 분석, 머신러닝, 디지털 제품 개발 역량을 강화하며 인턴십, 연구, 협업 프로젝트를 통해 기여할 기회를 적극적으로 찾고 있습니다.",
     card_focus: '현재 집중', card_values: '가치',
     focus1: '머신러닝 기초', focus2: 'SQL 최적화', focus3: '비즈니스 인텔리전스', focus4: '제품 분석',
@@ -1566,9 +1575,8 @@ const i18n = {
   de: {nav_about: 'Über mich', nav_work: 'Arbeiten', nav_contact: 'Kontakt',
     hero_eyebrow: 'Informatikstudentin · Datenanalyse & KI',
     hero_sub: 'Daten in Erkenntnisse für bessere Entscheidungen verwandeln',
-    hero_body: 'Ich helfe dabei, Rohdaten in aussagekräftige Erkenntnisse umzuwandeln, Geschäftsmöglichkeiten durch Analysen zu identifizieren und digitale Lösungen für reale Probleme zu entwickeln. Meine Arbeit liegt an der Schnittstelle von Daten, Technologie und Strategie und wird von einer einfachen Frage geleitet: Wie kann Technologie nützlicher, durchdachter und menschlicher werden?',
+    hero_body: 'Meine Arbeit liegt an der Schnittstelle von Daten, Technologie und Strategie und wird von einer einfachen Frage geleitet: Wie kann Technologie nützlicher, durchdachter und menschlicher werden?',
     hero_cta1: 'Projekte ansehen', hero_cta2: 'Kontakt aufnehmen',
-    about_intro: "Ich bin Salwa Fajariah, eine Informatikstudentin mit Schwerpunkt auf Datenanalyse, KI und der Lösung geschäftlicher Herausforderungen durch Technologie.",
     about_body: "Mein Interesse an Technologie begann mit einer einfachen Frage: Wie können Daten Menschen dabei helfen, bessere Entscheidungen zu treffen? Seitdem habe ich Projekte in den Bereichen Datenanalyse, Machine Learning, Informationssysteme und Produktstrategie durchgeführt. Es macht mir Freude, technisches Wissen mit betriebswirtschaftlichem Denken zu verbinden und Daten in Erkenntnisse sowie Ideen in praktische Lösungen umzuwandeln. Derzeit vertiefe ich meine Kenntnisse in Datenanalyse, Machine Learning und digitaler Produktentwicklung und suche aktiv nach Möglichkeiten, durch Praktika, Forschung und gemeinsame Projekte einen Beitrag zu leisten.",
     card_focus: 'Aktueller Fokus', card_values: 'Werte',
     focus1: 'Machine-Learning', focus2: 'SQL-Optimierung', focus3: 'Business Intelligence', focus4: 'Produktanalytik',
